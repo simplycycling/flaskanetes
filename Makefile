@@ -7,7 +7,7 @@ build:
 	docker build -t flaskanetes:latest app/
 
 run:
-	docker run -p 5000:5000 flaskanetes:latest
+	docker run -p 5001:5000 flaskanetes:latest
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -r {} +
