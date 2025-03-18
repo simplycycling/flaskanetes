@@ -1,2 +1,2 @@
 # flaskanetes
-Playground to play around with terraform, EKS, and flask.
+A massive bit of over-engineering for a Hello World app.
