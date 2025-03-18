@@ -1,7 +1,7 @@
 .PHONY: test build run clean
 
 test:
-	pytest app/tests/
+	. venv/bin/activate && pytest app/tests/
 
 build:
 	docker build -t flaskanetes:latest app/
