@@ -5,17 +5,16 @@ on:
     branches: [ main ]
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-  EKS_CLUSTER: flaskanetes-cluster
   AWS_REGION: us-west-2  # Change this to your desired region
+  ECR_REPOSITORY: flaskanetes
+  EKS_CLUSTER: flaskanetes-cluster
+  IMAGE_TAG: ${{ github.sha }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: read
       id-token: write
       
     steps:
@@ -34,7 +33,7 @@ jobs:
       run: |
         # Update the image tag in the deployment
         kubectl set image deployment/flaskanetes \
-          flaskanetes=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+          flaskanetes=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} \
           -n flaskanetes
         
         # Wait for rollout to complete

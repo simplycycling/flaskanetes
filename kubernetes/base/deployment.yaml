@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: flaskanetes
-        image: ghcr.io/your-username/flaskanetes:latest  # This will be updated by the CD workflow
+        image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/flaskanetes:latest  # This will be updated by the CD workflow
         ports:
         - containerPort: 5000
         livenessProbe:
