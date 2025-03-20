@@ -3,38 +3,50 @@ name: CD
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 env:
-  AWS_REGION: us-west-2  # Change this to your desired region
+  AWS_REGION: ap-southeast-2
+  AWS_ACCOUNT_ID: 650251696513
   ECR_REPOSITORY: flaskanetes
-  EKS_CLUSTER: flaskanetes-cluster
-  IMAGE_TAG: ${{ github.sha }}
+  EKS_CLUSTER: flaskanetes-dev
+  KUBERNETES_NAMESPACE: flaskanetes
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-      
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-        aws-region: ${{ env.AWS_REGION }}
-        
-    - name: Update kube config
-      run: aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER }} --region ${{ env.AWS_REGION }}
+      - uses: actions/checkout@v4
       
-    - name: Deploy to EKS
-      run: |
-        # Update the image tag in the deployment
-        kubectl set image deployment/flaskanetes \
-          flaskanetes=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} \
-          -n flaskanetes
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
         
-        # Wait for rollout to complete
-        kubectl rollout status deployment/flaskanetes -n flaskanetes 
+      - name: Update kube config
+        run: aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER }} --region ${{ env.AWS_REGION }}
+        
+      - name: Deploy to EKS
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Create namespace if it doesn't exist
+          kubectl create namespace ${{ env.KUBERNETES_NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+          
+          # Update the deployment with the new image
+          kubectl set image deployment/flaskanetes \
+            flaskanetes=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+            -n ${{ env.KUBERNETES_NAMESPACE }}
+            
+          # Wait for rollout to complete
+          kubectl rollout status deployment/flaskanetes -n ${{ env.KUBERNETES_NAMESPACE }} 
