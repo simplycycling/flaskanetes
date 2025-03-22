@@ -100,6 +100,19 @@ module "eks" {
   }
 }
 
+# ACM Module
+module "acm" {
+  source = "../../modules/acm"
+
+  domain_name = "flaskanetes.simplycycling.com"
+
+  tags = {
+    Environment = "dev"
+    Project     = "flaskanetes"
+    Terraform   = "true"
+  }
+}
+
 # Outputs
 output "ecr_repository_url" {
   description = "The URL of the ECR repository"
@@ -129,4 +142,9 @@ output "eks_cluster_name" {
 output "aws_load_balancer_controller_role_arn" {
   description = "ARN of the IAM role for the AWS Load Balancer Controller"
   value       = module.iam.aws_load_balancer_controller_role_arn
+}
+
+output "acm_certificate_arn" {
+  description = "ARN of the SSL certificate"
+  value       = module.acm.certificate_arn
 } 
