@@ -61,6 +61,8 @@ module "iam" {
 
   project     = "flaskanetes"
   environment = "dev"
+  github_org  = "simplycycling"
+  github_repo = "flaskanetes"
   oidc_provider_arn = module.eks.oidc_provider_arn
 
   tags = {
