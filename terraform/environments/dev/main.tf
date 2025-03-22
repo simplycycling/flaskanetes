@@ -64,6 +64,7 @@ module "iam" {
   github_org  = "simplycycling"
   github_repo = "flaskanetes"
   oidc_provider_arn = module.eks.oidc_provider_arn
+  oidc_provider     = module.eks.oidc_provider
 
   tags = {
     Environment = "dev"

@@ -31,4 +31,14 @@ output "node_group_id" {
 output "node_group_arn" {
   description = "The ARN of the EKS node group"
   value       = aws_eks_node_group.this.arn
+}
+
+output "oidc_provider_arn" {
+  description = "The ARN of the OIDC provider for the EKS cluster"
+  value       = aws_iam_openid_connect_provider.main.arn
+}
+
+output "oidc_provider" {
+  description = "The URL of the OIDC provider for the EKS cluster"
+  value       = replace(aws_iam_openid_connect_provider.main.url, "https://", "")
 } 

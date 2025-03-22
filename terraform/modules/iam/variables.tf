@@ -23,6 +23,11 @@ variable "oidc_provider_arn" {
   type        = string
 }
 
+variable "oidc_provider" {
+  description = "URL of the OIDC provider for EKS (without https://)"
+  type        = string
+}
+
 variable "tags" {
   description = "Tags to apply to all resources"
   type        = map(string)
