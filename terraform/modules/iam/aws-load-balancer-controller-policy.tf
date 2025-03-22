@@ -22,6 +22,7 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
           "ec2:DescribeTags",
           "ec2:GetCoipPoolUsage",
           "ec2:DescribeCoipPools",
+          "ec2:GetSecurityGroupsForVpc",
           "elasticloadbalancing:DescribeLoadBalancers",
           "elasticloadbalancing:DescribeLoadBalancerAttributes",
           "elasticloadbalancing:DescribeListeners",
@@ -31,7 +32,30 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
           "elasticloadbalancing:DescribeTargetGroups",
           "elasticloadbalancing:DescribeTargetGroupAttributes",
           "elasticloadbalancing:DescribeTargetHealth",
-          "elasticloadbalancing:DescribeTags"
+          "elasticloadbalancing:DescribeTags",
+          "elasticloadbalancing:CreateLoadBalancer",
+          "elasticloadbalancing:CreateTargetGroup",
+          "elasticloadbalancing:CreateListener",
+          "elasticloadbalancing:DeleteLoadBalancer",
+          "elasticloadbalancing:DeleteTargetGroup",
+          "elasticloadbalancing:DeleteListener",
+          "elasticloadbalancing:ModifyLoadBalancerAttributes",
+          "elasticloadbalancing:ModifyTargetGroup",
+          "elasticloadbalancing:ModifyTargetGroupAttributes",
+          "elasticloadbalancing:ModifyListener",
+          "elasticloadbalancing:SetIpAddressType",
+          "elasticloadbalancing:SetSecurityGroups",
+          "elasticloadbalancing:SetSubnets",
+          "elasticloadbalancing:RegisterTargets",
+          "elasticloadbalancing:DeregisterTargets",
+          "elasticloadbalancing:AddTags",
+          "elasticloadbalancing:RemoveTags",
+          "elasticloadbalancing:DescribeListenerAttributes",
+          "elasticloadbalancing:AddListenerCertificates",
+          "elasticloadbalancing:RemoveListenerCertificates",
+          "elasticloadbalancing:CreateRule",
+          "elasticloadbalancing:DeleteRule",
+          "elasticloadbalancing:ModifyRule"
         ]
         Resource = "*"
       },
@@ -71,7 +95,6 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
         Action = [
           "ec2:CreateSecurityGroup",
           "ec2:CreateTags",
-          "ec2:CreateTags",
           "ec2:DeleteTags",
           "ec2:DeleteSecurityGroup",
           "ec2:DescribeAuthorizeSecurityGroupEgressRules",
@@ -85,38 +108,6 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
           "ec2:ModifyVpcEndpointServiceConfiguration",
           "ec2:ModifyVpcEndpointServicePermissions",
           "ec2:RejectVpcEndpointConnections"
-        ]
-        Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "elasticloadbalancing:AddListenerCertificates",
-          "elasticloadbalancing:RemoveListenerCertificates"
-        ]
-        Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "elasticloadbalancing:AddTags",
-          "elasticloadbalancing:RemoveTags",
-          "elasticloadbalancing:ModifyLoadBalancerAttributes",
-          "elasticloadbalancing:SetIpAddressType",
-          "elasticloadbalancing:SetSecurityGroups",
-          "elasticloadbalancing:SetSubnets",
-          "elasticloadbalancing:DeleteLoadBalancer",
-          "elasticloadbalancing:ModifyTargetGroup",
-          "elasticloadbalancing:ModifyTargetGroupAttributes",
-          "elasticloadbalancing:DeleteTargetGroup"
-        ]
-        Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "elasticloadbalancing:RegisterTargets",
-          "elasticloadbalancing:DeregisterTargets"
         ]
         Resource = "*"
       }
