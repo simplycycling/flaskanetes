@@ -104,7 +104,7 @@ module "eks" {
 module "acm" {
   source = "../../modules/acm"
 
-  domain_name = "flaskanetes.simplycycling.com"
+  domain_name = "flaskanetes.overengineering.cloud"
 
   tags = {
     Environment = "dev"
