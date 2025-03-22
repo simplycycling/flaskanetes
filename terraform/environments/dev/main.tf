@@ -61,8 +61,7 @@ module "iam" {
 
   project     = "flaskanetes"
   environment = "dev"
-  github_org  = "simplycycling"
-  github_repo = "flaskanetes"
+  oidc_provider_arn = module.eks.oidc_provider_arn
 
   tags = {
     Environment = "dev"
@@ -118,4 +117,9 @@ output "eks_cluster_certificate_authority_data" {
 output "eks_cluster_name" {
   description = "The name of the EKS cluster"
   value       = module.eks.cluster_name
+}
+
+output "aws_load_balancer_controller_role_arn" {
+  description = "ARN of the IAM role for the AWS Load Balancer Controller"
+  value       = module.iam.aws_load_balancer_controller_role_arn
 } 
