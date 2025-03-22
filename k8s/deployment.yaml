@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaskanetes
+  labels:
+    app: flaskanetes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flaskanetes
+  template:
+    metadata:
+      labels:
+        app: flaskanetes
+    spec:
+      containers:
+      - name: flaskanetes
+        image: 650251696513.dkr.ecr.ap-southeast-2.amazonaws.com/flaskanetes:latest
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 15
+          periodSeconds: 20 
