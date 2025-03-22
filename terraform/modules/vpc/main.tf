@@ -23,6 +23,7 @@ resource "aws_subnet" "public" {
   tags = merge(
     {
       Name = "${var.project}-${var.environment}-public-${count.index + 1}"
+      "kubernetes.io/role/elb" = "1"
     },
     var.tags
   )
