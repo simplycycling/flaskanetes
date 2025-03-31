@@ -196,7 +196,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Set up AWS Backup for EKS cluster
 - [ ] Implement auto-scaling policies
 - [ ] Add AWS WAF for additional security
-- [ ] Set up AWS Config for compliance monitoring
 
 ### Development
 
@@ -229,4 +228,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [ ] Add AWS Cost Explorer integration
 - [ ] Implement auto-scaling based on cost metrics
 - [ ] Set up budget alerts
-
