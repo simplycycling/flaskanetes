@@ -8,11 +8,11 @@ resource "aws_iam_role" "aws_load_balancer_controller" {
         Action = "sts:AssumeRoleWithWebIdentity"
         Effect = "Allow"
         Principal = {
-          Federated = var.oidc_provider_arn
+          Federated = aws_iam_openid_connect_provider.github_actions.arn
         }
         Condition = {
           StringEquals = {
-            "${var.oidc_provider}:sub" = "system:serviceaccount:kube-system:aws-load-balancer-controller"
+            "token.actions.githubusercontent.com:sub" = "system:serviceaccount:kube-system:aws-load-balancer-controller"
           }
         }
       }
