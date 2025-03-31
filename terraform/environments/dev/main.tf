@@ -67,8 +67,6 @@ module "iam" {
   environment = "dev"
   github_org  = "simplycycling"
   github_repo = "flaskanetes"
-  oidc_provider_arn = module.eks.oidc_provider_arn
-  oidc_provider     = module.eks.oidc_provider
 
   tags = {
     Environment = "dev"
@@ -115,20 +113,19 @@ module "acm" {
 
 # Route53 Module
 module "route53" {
+  count  = var.environment == "prod" ? 1 : 0
   source = "../../modules/route53"
 
   zone_id      = "Z0159090FXKGC0ZEMMR2"  # Replace with your actual hosted zone ID
   domain_name  = "flaskanetes.overengineering.cloud"
-  alb_dns_name = data.aws_lb.ingress.dns_name
-  alb_zone_id  = data.aws_lb.ingress.zone_id
+  alb_dns_name = data.aws_lb.ingress[0].dns_name
+  alb_zone_id  = data.aws_lb.ingress[0].zone_id
 }
 
 # Data source to get ALB details
 data "aws_lb" "ingress" {
-  tags = {
-    "ingress.k8s.aws/resource" = "LoadBalancer"
-    "ingress.k8s.aws/stack"    = "flaskanetes/flask-app"
-  }
+  count = var.environment == "prod" ? 1 : 0
+  name  = "flaskanetes-${var.environment}-ingress"
 }
 
 # Outputs
